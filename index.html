@@ -1,27 +1,121 @@
-
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولّد الذكاء الاصطناعي</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>من أنا؟ - AI Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+    select, input, button {
+      font-size: 1rem;
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    #outputContainer {
+      margin-top: 20px;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 10px;
+      display: none;
+      position: relative;
+    }
+    #copyBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <select id="language" onchange="setLanguage(this.value)">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-        </select>
-        <h1 id="prompt-label">ماذا تريد مني أن أكون؟</h1>
-        <textarea id="description" placeholder="اكتب وصف البرنامج..."></textarea>
-        <button onclick="handleStart()">ابدأ</button>
-        <div id="output" style="display:none;">
-            <h3>تم توليد البرنامج:</h3>
-            <textarea id="generated" readonly></textarea>
-            <button onclick="saveFile()">حفظ البرنامج</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
+  <div class="container">
+    <select id="lang">
+      <option value="ar">العربية</option>
+      <option value="en">English</option>
+    </select>
+    <h2 id="title">ماذا تريد مني أن أكون؟</h2>
+    <input type="text" id="desc" placeholder="اكتب وصف البرنامج هنا...">
+    <button id="start">ابدأ</button><div id="outputContainer">
+  <pre id="result"></pre>
+  <button id="copyBtn">نسخ الكود</button>
+</div>
+
+  </div>  <script>
+    const lang = document.getElementById('lang');
+    const title = document.getElementById('title');
+    const desc = document.getElementById('desc');
+    const start = document.getElementById('start');
+    const result = document.getElementById('result');
+    const outputContainer = document.getElementById('outputContainer');
+    const copyBtn = document.getElementById('copyBtn');
+
+    let isPaid = false; // حاليًا الموقع مجاني
+    let aiConnected = true;
+    let siteOn = true;
+
+    lang.addEventListener('change', () => {
+      if (lang.value === 'en') {
+        title.textContent = "What do you want me to be?";
+        desc.placeholder = "Enter your program description...";
+        start.textContent = "Start";
+        copyBtn.textContent = "Copy Code";
+      } else {
+        title.textContent = "ماذا تريد مني أن أكون؟";
+        desc.placeholder = "اكتب وصف البرنامج هنا...";
+        start.textContent = "ابدأ";
+        copyBtn.textContent = "نسخ الكود";
+      }
+    });
+
+    start.addEventListener('click', () => {
+      const text = desc.value.trim();
+      if (!text) return alert(lang.value === 'ar' ? "يرجى كتابة وصف." : "Please enter a description.");
+
+      // لوحة التحكم السرية
+      if (text === 'علي علي لبيك يا علي') {
+        alert('تم فتح لوحة التحكم السرية (قيد التطوير).');
+        return;
+      }
+
+      if (!siteOn) return alert(lang.value === 'ar' ? "الموقع متوقف حالياً." : "The site is currently offline.");
+      if (!aiConnected) return alert(lang.value === 'ar' ? "الاتصال بالذكاء الاصطناعي غير مفعل حالياً." : "AI is not connected.");
+
+      if (isPaid) {
+        alert(lang.value === 'ar' ? "يجب الدفع قبل الاستخدام." : "Payment required before use.");
+        return;
+      }
+
+      // توليد البرنامج وهمياً
+      const fakeProgram = `// ${lang.value === 'ar' ? 'برنامج' : 'Program'}: ${text}\nfunction start() {\n  console.log("${text} is now active");\n}`;
+      result.textContent = fakeProgram;
+      outputContainer.style.display = 'block';
+    });
+
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(result.textContent)
+        .then(() => alert(lang.value === 'ar' ? 'تم نسخ الكود!' : 'Code copied!'));
+    });
+  </script></body>
 </html>
