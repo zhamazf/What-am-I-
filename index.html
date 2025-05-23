@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولّد الذكاء الاصطناعي</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <select id="language" onchange="setLanguage(this.value)">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+        </select>
+        <h1 id="prompt-label">ماذا تريد مني أن أكون؟</h1>
+        <textarea id="description" placeholder="اكتب وصف البرنامج..."></textarea>
+        <button onclick="handleStart()">ابدأ</button>
+        <div id="output" style="display:none;">
+            <h3>تم توليد البرنامج:</h3>
+            <textarea id="generated" readonly></textarea>
+            <button onclick="saveFile()">حفظ البرنامج</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
